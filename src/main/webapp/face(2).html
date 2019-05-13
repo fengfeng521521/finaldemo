@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>GET VIDEO</title>
+    <meta charset="utf-8">
+<style>
+    #bt{
+        width: 30px;
+        height: 30px;
+        background-color: aqua;
+
+
+    }
+
+
+
+</style>
+
+</head>
+<body>
+<div>
+    <input type="button" title="开启摄像头" value="开启摄像头" onclick="getMedia();" />
+    <video id="video" width="500px" height="500px" autoplay="autoplay"></video>
+    <canvas id="canvas" width="500px" height="500px"></canvas>
+    <button id="snap" onclick="takePhoto();">拍照</button>
+
+     <form method="post" action="/home">
+
+         <input type="text"  id="imgtxt" name="img" value="asdasdasd">
+
+         <input type="submit" value="上传">
+     </form>
+
+
+</div>
+
+
+</body>
+<script type="javascript" src="js/jquery-1.8.3.js"></script>
+<script >
+    function getMedia() {
+        var constraints = {
+            video: {width: 500, height: 500},
+            audio: true
+        };
+        //获得video摄像头区域
+        var video = $("#video");
+        //这里介绍新的方法，返回一个 Promise对象
+        // 这个Promise对象返回成功后的回调函数带一个 MediaStream 对象作为其参数
+        // then()是Promise对象里的方法
+        // then()方法是异步执行，当then()前的方法执行完后再执行then()内部的程序
+        // 避免数据没有获取到
+        var promise = navigator.mediaDevices.getUserMedia(constraints);
+        promise.then(function (MediaStream) {
+            video.srcObject = MediaStream;
+            video.play();
+        });
+    };
+
+    function takePhoto() {
+        //获得Canvas对象
+        var video = $("#video");
+        var canvas = $("#canvas");
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, 500, 500);
+        base64Img =canvas.toDataURL();
+         var imgtxt=$("#imgtxt");
+        imgtxt.val(base64Img);
+     alert(base64Img);
+
+    };
+
+
+
+   /* $('#snap').on('click', function () {
+        //context.drawImage(video, 0, 0, canvas.width = video.videoWidth, canvas.height = video.videoHeight);
+        $.post('/home/index', { "img": canvas.toDataURL().substr(22) }, function (data, status) {
+            alert(status!="success"?"图片处理出错！":data== "yes"?"图片上传完成！":data);
+        }, "text");
+    });
+    },false);
+  */
+
+</script>
+</html>
