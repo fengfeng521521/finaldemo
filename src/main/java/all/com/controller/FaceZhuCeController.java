@@ -48,7 +48,7 @@ public class FaceZhuCeController {
     public  String getMesag(){
 
 
-        return  "asdasdasdasdasdasdasd";
+        return  "asdasdasdasdasdasdasd asdadada你好啊我的";
 
     }
     @RequestMapping("/getimgBa64")
